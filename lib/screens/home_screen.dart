@@ -3,6 +3,7 @@ import 'package:crony/api/apis.dart';
 import 'package:crony/main.dart';
 import 'package:crony/models/chat_user.dart';
 import 'package:crony/screens/profile_screen.dart';
+import 'package:crony/screens/setting_screen.dart';
 import 'package:crony/widgets/chat_user_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,18 +27,20 @@ class HomeScreenState extends State<HomeScreen> {
     super.initState();
     APIs.getSefInfo();
     APIs.updateActiveStatus(true);
-    SystemChannels.lifecycle.setMessageHandler((message) {
-      log('message is $message');
-      if (APIs.auth.currentUser != null) {
-        if (message.toString().contains('resume')) {
-          APIs.updateActiveStatus(true);
+    SystemChannels.lifecycle.setMessageHandler(
+      (message) {
+        log('message is $message');
+        if (APIs.auth.currentUser != null) {
+          if (message.toString().contains('resume')) {
+            APIs.updateActiveStatus(true);
+          }
+          if (message.toString().contains('pause')) {
+            APIs.updateActiveStatus(false);
+          }
         }
-        if (message.toString().contains('pause')) {
-          APIs.updateActiveStatus(false);
-        }
-      }
-      return Future.value(message);
-    });
+        return Future.value(message);
+      },
+    );
   }
 
   @override
@@ -70,12 +73,18 @@ class HomeScreenState extends State<HomeScreen> {
                       autofocus: true,
                       cursorColor: Colors.white,
                       style: TextStyle(
-                          fontSize: 17, color: Colors.white, letterSpacing: 0.5),
+                          fontSize: 17,
+                          color: Colors.white,
+                          letterSpacing: 0.5),
                       onChanged: (val) {
                         _searchList.clear();
                         for (var i in _list) {
-                          if (i.name.toLowerCase().contains(val.toLowerCase()) ||
-                              i.email.toLowerCase().contains(val.toLowerCase())) {
+                          if (i.name
+                                  .toLowerCase()
+                                  .contains(val.toLowerCase()) ||
+                              i.email
+                                  .toLowerCase()
+                                  .contains(val.toLowerCase())) {
                             _searchList.add(i);
                           }
                           setState(() {
@@ -84,47 +93,72 @@ class HomeScreenState extends State<HomeScreen> {
                         }
                       },
                     )
-                  : Text('Home',style: TextStyle(fontFamily: GoogleFonts.badScript().fontFamily,fontSize: 25),),centerTitle: true,
+                  : Text(
+                      'Home',
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.badScript().fontFamily,
+                          fontSize: 25),
+                    ),
+              centerTitle: true,
               leading: Icon(CupertinoIcons.home),
               actions: [
                 IconButton(
                   onPressed: () {
-                    setState(() {
-                      _isSearching = !_isSearching;
-                      if (!_isSearching) {
-                        _searchList
-                            .clear(); // Clear search list when exiting search mode
-                      }
-                    });
+                    setState(
+                      () {
+                        _isSearching = !_isSearching;
+                        if (!_isSearching) {
+                          _searchList
+                              .clear(); // Clear search list when exiting search mode
+                        }
+                      },
+                    );
                   },
                   icon: Icon(_isSearching
                       ? CupertinoIcons.clear_circled_solid
                       : Icons.search),
                 ),
-                PopupMenuButton(itemBuilder: (BuildContext context) {
-                  return [
-                    PopupMenuItem(
-                      child: ListTile(
-                        title: Text("Settings"),
-                        onTap: () {
-                          Navigator.push(
+                PopupMenuButton(
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem(
+                        child: ListTile(
+                          title: Text("PROFILE"),
+                          onTap: () {
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProfileScreen(
-                                        user: APIs.me,
-                                      )));
-                        },
+                                builder: (context) => ProfileScreen(
+                                  user: APIs.me,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ];
-                })
+                      PopupMenuItem(
+                        child: ListTile(
+                          title: Text("SETTINGS"),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => SettingsScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ];
+                  },
+                ),
               ],
             ),
             floatingActionButton: Padding(
               padding: const EdgeInsets.all(10.0),
               child: FloatingActionButton(
                 onPressed: () {},
-                child: const Icon(Icons.add_comment_rounded),
+                child: Icon(Icons.add_comment_rounded,color: ColorScheme.of(context).inversePrimary,),
               ),
             ),
             body: StreamBuilder(
@@ -147,8 +181,9 @@ class HomeScreenState extends State<HomeScreen> {
 
                       if (_list.isNotEmpty) {
                         return ListView.builder(
-                            itemCount:
-                                _isSearching ? _searchList.length : _list.length,
+                            itemCount: _isSearching
+                                ? _searchList.length
+                                : _list.length,
                             padding: EdgeInsets.only(top: mq.height * 0.01),
                             physics: BouncingScrollPhysics(),
                             itemBuilder: (context, index) {

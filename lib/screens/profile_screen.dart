@@ -5,11 +5,8 @@ import 'package:crony/api/apis.dart';
 import 'package:crony/helper/dialogs.dart';
 import 'package:crony/main.dart';
 import 'package:crony/models/chat_user.dart';
-import 'package:crony/screens/login_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.user});
@@ -31,27 +28,6 @@ class ProfileScreenState extends State<ProfileScreen> {
         appBar: AppBar(
           title: Text('Profile'),
           centerTitle: true,
-        ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: FloatingActionButton.extended(
-            backgroundColor: Colors.redAccent,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            onPressed: ()async{
-              Dialogs.showProgressbar(context);
-              await APIs.updateActiveStatus(false);
-              await APIs.auth.signOut().then((value)async{
-                await GoogleSignIn().signOut().then((value){
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  APIs.auth = FirebaseAuth.instance;
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginScreen()));
-                });
-              });
-
-            },icon: const Icon(Icons.logout),label: const Text('Logout'),
-          ),
         ),
         body: Form(
           key: _formKey,
@@ -92,7 +68,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                   SizedBox(height: mq.height * .04,),
-                  Text(widget.user.email, style: TextStyle(color: Colors.black54,fontSize: 18),),
+                  Text(widget.user.email, style: TextStyle(color: ColorScheme.of(context).inversePrimary,fontSize: 18),),
                   SizedBox(height: mq.height * .05,),
                   TextFormField(
                     onSaved: (val) => APIs.me.name = val ?? '',
@@ -115,7 +91,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                         Dialogs.showSnackbar(context, 'Profile Updated Successfully');
                       });
                     }
-                  },icon: Icon(Icons.edit), label: Text('Update'), )
+                  },icon: Icon(Icons.edit,color: ColorScheme.of(context).inversePrimary,), label: Text('Update',style: TextStyle(color: ColorScheme.of(context).inversePrimary),), )
                 ],
               ),
             ),

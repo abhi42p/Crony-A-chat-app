@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'dark_mode.dart';
 import 'light_mode.dart';
 
@@ -8,7 +7,7 @@ class ThemeProvider extends ChangeNotifier {
   ThemeData _themeData = lightMode;
 
   ThemeProvider() {
-    _loadTheme(); // Load saved theme when provider is initialized
+    _loadTheme();
   }
 
   ThemeData get themeData => _themeData;
