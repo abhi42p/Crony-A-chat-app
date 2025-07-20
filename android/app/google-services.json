@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "439672808351",
+    "project_id": "crony-7fada",
+    "storage_bucket": "crony-7fada.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439672808351:android:b5c28889c23ba6b4a353aa",
+        "android_client_info": {
+          "package_name": "com.example.crony"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439672808351-r4ps3faf4oggd917s1o2g06tpepiee6n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.crony",
+            "certificate_hash": "7d590ff27ef96b5b21325bbc68b40f2c030ce872"
+          }
+        },
+        {
+          "client_id": "439672808351-el0kflneo2nftat346205hhpsqg3mqbp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIXUmPDHlagnArlwWW82ZKX4VfhM3pnuA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439672808351-el0kflneo2nftat346205hhpsqg3mqbp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "439672808351-pfukdui05o0q6b5uo3tfi0erep1gsg1m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.crony"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
